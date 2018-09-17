@@ -21,10 +21,6 @@ class RatingResource extends JsonResource
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,
             'book' => $this->book,
-            /*
-             * Fix average rating error later
-             */
-            //'average_rating' => $this->ratings->avg('rating'),
         ];
     }
 }
