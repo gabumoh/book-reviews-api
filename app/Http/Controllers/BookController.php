@@ -108,6 +108,6 @@ class BookController extends Controller
 
         $book->delete();
 
-        return response()->json("Deleted Successfully", 200);
+        return response()->json('Deleted Successfully', 200);
     }
 }
