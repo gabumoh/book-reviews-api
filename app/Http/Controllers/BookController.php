@@ -83,7 +83,7 @@ class BookController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 417);
         }
-        
+
         if ($request->user()->id !== $book->user_id) {
             return response()->json(['error' => 'You can only edit your own books.'], 403);
         }
@@ -101,8 +101,13 @@ class BookController extends Controller
      */
     public function destroy(Book $book)
     {
+        $user_id = auth()->id();
+        if ($user_id !== $book->user_id) {
+            return response()->json(['error' => 'You can only delete your own books.'], 403);
+        }
+
         $book->delete();
 
-        return response()->json(null, 204);
+        return response()->json("Deleted Successfully", 200);
     }
 }
