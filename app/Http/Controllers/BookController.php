@@ -8,6 +8,12 @@ use App\Http\Resources\BookResource;
 
 class BookController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:api')->except(['index', 'show']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -75,10 +81,5 @@ class BookController extends Controller
         $book->delete();
 
         return response()->json(null, 204);
-    }
-
-    public function __construct()
-    {
-        $this->middleware('auth:api')->except(['index', 'show']);
     }
 }
