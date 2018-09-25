@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Book;
 use App\Http\Resources\BookResource;
+use Validator;
 
 class BookController extends Controller
 {
@@ -32,6 +33,17 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
+        $input = $request->all();
+
+        $validator = Validator::make($input, [
+            'title' => 'required',
+            'description' =>'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 417);
+        }
+
         $book = Book::create([
             'user_id' => $request->user()->id,
             'title' => $request->title,
@@ -61,6 +73,17 @@ class BookController extends Controller
      */
     public function update(Request $request, Book $book)
     {
+        $input = $request->all();
+
+        $validator = Validator::make($input, [
+            'title' => 'required',
+            'description' =>'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 417);
+        }
+        
         if ($request->user()->id !== $book->user_id) {
             return response()->json(['error' => 'You can only edit your own books.'], 403);
         }
