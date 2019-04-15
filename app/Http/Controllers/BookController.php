@@ -41,7 +41,7 @@ class BookController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 417);
+            return response()->json($validator->errors(), 400);
         }
 
         $book = Book::create([
@@ -81,7 +81,7 @@ class BookController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 417);
+            return response()->json($validator->errors(), 400);
         }
 
         if ($request->user()->id !== $book->user_id) {

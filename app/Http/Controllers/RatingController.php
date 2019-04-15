@@ -26,7 +26,7 @@ class RatingController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 417);
+            return response()->json($validator->errors(), 400);
         }
 
     	$rating = Rating::firstOrCreate(
