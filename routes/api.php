@@ -22,4 +22,5 @@ Route::post('login', 'AuthController@login');
 // Books
 Route::apiResource('books', 'BookController');
 // Ratings
-Route::post('books/{book}/ratings', 'RatingController@store')->middleware('auth:api');
+Route::post('books/{book}/ratings', 'RatingController@store');
+Route::delete('books/{book}/ratings/{rating}', 'RatingController@destroy');

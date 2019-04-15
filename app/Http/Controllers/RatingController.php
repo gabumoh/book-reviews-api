@@ -40,14 +40,14 @@ class RatingController extends Controller
     	return new RatingResource($rating);
     }
 
-    public function destroy(Rating $ratings)
+    public function destroy(Book $book, Rating $rating)
     {
         $user_id = auth()->id();
-        if ($user_id !== $ratings->user_id) {
+        if ($user_id !== $rating->user_id) {
             return response()->json(['error' => 'You can only delete your own ratings.'], 403);
         }
 
-        $ratings->delete();
+        $rating->delete();
 
         return response()->json('Deleted Successfully', 200);
     }
