@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: http://142.93.83.198/api/
+HOST: http://127.0.0.1:8000/api/
 
 # Book Review Api
 
@@ -126,8 +126,8 @@ This endpoint displays all the books that are present in the database, it is pag
                 }
             ],
             "links": {
-                "first": "http://142.93.83.198/api/books?page=1",
-                "last": "http://142.93.83.198/api/books?page=1",
+                "first": "http://127.0.0.1:8000/api/books?page=1",
+                "last": "http://127.0.0.1:8000/api/books?page=1",
                 "prev": null,
                 "next": null
             },
@@ -135,7 +135,7 @@ This endpoint displays all the books that are present in the database, it is pag
                 "current_page": 1,
                 "from": 1,
                 "last_page": 1,
-                "path": "http://142.93.83.198/api/books",
+                "path": "http://127.0.0.1:8000/api/books",
                 "per_page": 25,
                 "to": 2,
                 "total":2
