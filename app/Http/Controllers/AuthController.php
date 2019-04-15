@@ -4,39 +4,52 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Validator;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
-    {
-      $user = User::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'password' => bcrypt($request->password),
-      ]);
+  public function register(Request $request)
+  {
+    $input = $request->all();
 
-      $token = auth()->login($user);
+    $validator = Validator::make($input, [
+      'name' => 'required',
+      'email' => 'required|email',
+      'password' => 'required',
+    ]);
 
-      return $this->respondWithToken($token);
+    if ($validator->fails()) {
+      return response()->json($validator->errors(), 400);
     }
 
-    public function login(Request $request)
-    {
-      $credentials = $request->only(['email', 'password']);
+    $user = User::create([
+      'name' => $request->name,
+      'email' => $request->email,
+      'password' => bcrypt($request->password),
+    ]);
 
-      if (!$token = auth()->attempt($credentials)) {
-        return response()->json(['error' => 'Unauthorized'], 401);
-      }
+    $token = auth()->login($user);
 
-      return $this->respondWithToken($token);
+    return $this->respondWithToken($token);
+  }
+
+  public function login(Request $request)
+  {
+    $credentials = $request->only(['email', 'password']);
+
+    if (!$token = auth()->attempt($credentials)) {
+      return response()->json(['error' => 'Unauthorized'], 401);
     }
 
-    protected function respondWithToken($token)
-    {
-      return response()->json([
-        'access_token' => $token,
-        'token_type' => 'bearer',
-        'expires_in' => auth()->factory()->getTTL() * 60
-      ]);
-    }
+    return $this->respondWithToken($token);
+  }
+
+  protected function respondWithToken($token)
+  {
+    return response()->json([
+      'access_token' => $token,
+      'token_type' => 'bearer',
+      'expires_in' => auth()->factory()->getTTL() * 60
+    ]);
+  }
 }
