@@ -36,4 +36,29 @@ class AuthTest extends TestCase
         //Assert we received a token
         $this->assertArrayHasKey('access_token', $response->json());
      }
+
+     /**
+      * @test
+      * Test Login
+      */
+     public function testLogin()
+     {
+        User::create([
+            'name' => 'John Doe',
+            'email' => 'john@test.com',
+            'password' => bcrypt('secret1234')
+        ]);
+
+        //Attempt Login
+        $response = $this->post('/api/login', [
+            'email' => 'john@test.com',
+            'password' => 'secret1234'
+        ]);
+
+        //Assert it was successful
+        $response->assertStatus(200);
+
+        //Assert we received a token
+        $this->assertArrayHasKey('access_token', $response->json());
+     }
 }
