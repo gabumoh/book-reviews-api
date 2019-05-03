@@ -91,4 +91,29 @@ class BookTest extends TestCase
 
         //Assert title is correct (rewrite assert title to match collection)
     }
+
+    public function testUpdate()
+    {
+        $token = $this->authenticate();
+
+        $book = Book::create([
+            'title' => 'Narnia',
+            'description' => 'Do no cite deep magic to me witch I was there when it was written'
+        ]);
+
+        $this->user->books()->save($book);
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer '.$token,
+        ])->put('/api/books/'.$book->id, [
+            'title' => 'Updated Title',
+            'description' => 'Updated Description'
+        ]);
+
+        //Assert Success status
+        $response->assertStatus(200);
+
+        //Assert Database has updated values
+        $this->assertDatabaseHas('books', ['id' => $book->id, 'title' => 'Updated Title', 'description' => 'Updated Description']);
+    }
 }
