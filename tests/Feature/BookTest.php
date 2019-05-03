@@ -34,6 +34,27 @@ class BookTest extends TestCase
         return $token;
     }
 
+    public function testAll()
+    {
+        //Authenticate and attach book to user
+        $token = $this->authenticate();
+
+        $book = Book::create([
+            'title' => 'Narnia',
+            'description' => 'Do no cite deep magic to me witch I was there when it was written'
+        ]);
+
+        $this->user->books()->save($book);
+
+        //Call route and assert status
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer '.$token,
+        ])->get('/api/books');
+        $response->assertStatus(200);
+
+        //Rewrite assert to check for match between created book and book in the response
+    }
+
     public function testCreate()
     {
         //Get token
