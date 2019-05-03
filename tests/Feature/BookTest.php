@@ -70,4 +70,25 @@ class BookTest extends TestCase
         //Assert success status
         $response->assertStatus(201);
     }
+
+    public function testShow()
+    {
+        $token = $this->authenticate();
+
+        $book = Book::create([
+            'title' => 'Narnia',
+            'description' => 'Do no cite deep magic to me witch I was there when it was written'
+        ]);
+
+        $this->user->books()->save($book);
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer '.$token,
+        ])->get('/api/books/'.$book->id);
+
+        //Assert success status
+        $response->assertStatus(200);
+
+        //Assert title is correct (rewrite assert title to match collection)
+    }
 }
