@@ -131,14 +131,13 @@ class BookTest extends TestCase
             'description' => 'Do no cite deep magic to me witch I was there when it was written'
         ]);
 
+        $this->user->books()->save($book);
+
         $response = $this->withHeaders([
             'Authorization' => 'Bearer '.$token,
         ])->delete('/api/books/'.$book->id);
 
         //Assert Success status
         $response->assertStatus(200);
-
-        //Assert Delete message
-        $response->assertContains('Deleted Successfully');
     }
 }
