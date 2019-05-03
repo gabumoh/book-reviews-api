@@ -34,4 +34,19 @@ class BookTest extends TestCase
         return $token;
     }
 
+    public function testCreate()
+    {
+        //Get token
+        $token = $this->authenticate();
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer '.$token,
+        ])->post('/api/books', [
+            'title' => 'Narnia',
+            'description' => 'Do no cite deep magic to me witch I was there when it was written'
+        ]);
+
+        //Assert success status
+        $response->assertStatus(201);
+    }
 }
