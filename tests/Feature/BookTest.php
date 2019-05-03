@@ -60,15 +60,20 @@ class BookTest extends TestCase
         //Get token
         $token = $this->authenticate();
 
-        $response = $this->withHeaders([
-            'Authorization' => 'Bearer '.$token,
-        ])->post('/api/books', [
+        $book = Book::create([
             'title' => 'Narnia',
             'description' => 'Do no cite deep magic to me witch I was there when it was written'
         ]);
 
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer '.$token,
+        ])->post('/api/books', $book->toArray());
+
         //Assert success status
         $response->assertStatus(201);
+
+        //Assert database has created book
+        $this->assertDatabaseHas('books', ['id' => $book->id, 'title' => 'Narnia', 'description' => 'Do no cite deep magic to me witch I was there when it was written']);
     }
 
     public function testShow()
