@@ -121,4 +121,24 @@ class BookTest extends TestCase
         //Assert Database has updated values
         $this->assertDatabaseHas('books', ['id' => $book->id, 'title' => 'Updated Title', 'description' => 'Updated Description']);
     }
+
+    public function testDelete()
+    {
+        $token = $this->authenticate();
+
+        $book = Book::create([
+            'title' => 'Narnia',
+            'description' => 'Do no cite deep magic to me witch I was there when it was written'
+        ]);
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer '.$token,
+        ])->delete('/api/books/'.$book->id);
+
+        //Assert Success status
+        $response->assertStatus(200);
+
+        //Assert Delete message
+        $response->assertContains('Deleted Successfully');
+    }
 }
