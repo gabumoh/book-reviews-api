@@ -72,6 +72,9 @@ class BookTest extends TestCase
         //Assert success status
         $response->assertStatus(201);
 
+        //Assert response contains book with matching title
+        $this->assertEquals('Narnia', $response->json()['data']['title']);
+
         //Assert database has created book
         $this->assertDatabaseHas('books', ['id' => $book->id, 'title' => 'Narnia', 'description' => 'Do no cite deep magic to me witch I was there when it was written']);
     }
@@ -94,7 +97,7 @@ class BookTest extends TestCase
         //Assert success status
         $response->assertStatus(200);
 
-        //Assert response contain book with matching title
+        //Assert response contains book with matching title
         $this->assertArrayHasKey('data', $response->json());
         $this->assertEquals('Narnia', $response->json()['data']['title']);
     }
