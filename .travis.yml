@@ -1,0 +1,37 @@
+language: php
+
+php:
+  - 7.1.3
+  - 7.2
+  - 7.3
+
+branches:
+  only:
+    - master
+
+services:
+  - mysql
+
+before_install:
+  - travis_retry composer self-update
+
+before_script:
+  - cp .env.testing .env
+  - travis_retry composer install --no-interaction
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS bookreview_testing;'
+  - mysql -u root -e "CREATE USER 'testing'@'localhost';"
+  - mysql -u root -e "GRANT ALL ON bookreview_testing.* TO 'testing'@'localhost';"
+  - chmod -R 777 storage
+  - php artisan migrate:install --no-interaction -vvv
+
+script:
+  - php artisan migrate --env=testing --no-interaction -vvv
+  - php artisan passport:install --env=testing --no-interaction -vvv
+  - php artisan config:clear
+  - vendor/bin/phpunit
+
+notifications:
+  email:
+    - gmaumoh@gmail.com
+  on_success: never
+  on_failure: always
