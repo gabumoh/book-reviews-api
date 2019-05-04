@@ -31,7 +31,7 @@ class RatingTest extends TestCase
 
         $this->user = $user;
         $token = JWTAuth::fromUser($user);
-
+        
         return $token;
     }
 
@@ -55,5 +55,33 @@ class RatingTest extends TestCase
 
     	//Assert Success
     	$response->assertStatus(201);
+    }
+
+    public function testDelete()
+    {
+    	//Get token
+    	$token = $this->authenticate();
+
+    	$book = Book::create([
+    		'title' => 'Narnia',
+            'description' => 'Do no cite deep magic to me witch I was there when it was written'
+    	]);
+
+    	$this->user->books()->save($book);
+
+    	$rating = Rating::create([
+    		'user_id' => $this->user->id,
+    		'book_id' => $book->id,
+    		'rating' => 5,
+    	]);
+
+    	$response = $this->withHeaders([
+    		'Authorization' => 'Bearer '.$token,
+    	])->delete('/api/books/'.$book->id.'/ratings/'.$rating->id);
+
+    	//Assert success
+    	$response->assertStatus(200);
+
+    	$this->assertEquals('Deleted Successfully', $response->json());
     }
 }
