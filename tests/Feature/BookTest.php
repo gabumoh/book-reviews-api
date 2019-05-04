@@ -139,5 +139,8 @@ class BookTest extends TestCase
 
         //Assert Success status
         $response->assertStatus(200);
+
+        //Assert Success message
+        $this->assertEquals('Deleted Successfully', $response->json());
     }
 }
