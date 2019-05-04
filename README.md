@@ -1,6 +1,5 @@
 [![Build Status](https://travis-ci.com/gabumoh/book-reviews-api.svg?branch=master)](https://travis-ci.com/gabumoh/book-reviews-api)
 
-FORMAT: 1A
 HOST: http://127.0.0.1:8000/api/
 
 # Book Review Api
