@@ -94,7 +94,9 @@ class BookTest extends TestCase
         //Assert success status
         $response->assertStatus(200);
 
-        //Assert title is correct (rewrite assert title to match collection)
+        //Assert response contain book with matching title
+        $this->assertArrayHasKey('data', $response->json());
+        $this->assertEquals('Narnia', $response->json()['data']['title']);
     }
 
     public function testUpdate()
