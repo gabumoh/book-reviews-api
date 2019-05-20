@@ -54,7 +54,7 @@ class BookTest extends TestCase
 
         //dd($response);
         //Rewrite assert to check for match between created book and book in the response
-        //$this->assertEquals('Narnia', $response->json()['data']['title']);
+        $this->assertEquals('Narnia', $response->json()['data'][0]['title']);
     }
 
     public function testCreate()
