@@ -52,8 +52,7 @@ class BookTest extends TestCase
         ])->get('/api/books');
         $response->assertStatus(200);
 
-        //dd($response);
-        //Rewrite assert to check for match between created book and book in the response
+        //Assert response contains book with matching title        
         $this->assertEquals('Narnia', $response->json()['data'][0]['title']);
     }
 
